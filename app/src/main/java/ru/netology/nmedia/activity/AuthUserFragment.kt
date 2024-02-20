@@ -11,18 +11,16 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
-import ru.netology.nmedia.auth.AuthState
 import ru.netology.nmedia.databinding.FragmentAuthUserBinding
-import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmodel.AuthUserViewModel
 import javax.inject.Inject
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class AuthUserFragment : Fragment() {
 
-    //@Inject
-    //lateinit var appAuth: AppAuth
+    @Inject
+    lateinit var appAuth: AppAuth
 
     private val viewModel: AuthUserViewModel by activityViewModels()
 

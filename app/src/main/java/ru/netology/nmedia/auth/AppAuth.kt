@@ -1,12 +1,13 @@
 package ru.netology.nmedia.auth
 
 import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppAuth @Inject constructor(context: Context) {
+class AppAuth @Inject constructor(@ApplicationContext context: Context) {
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
     private val idKey = "id"
     private val tokenKey = "token"
@@ -31,7 +32,7 @@ class AppAuth @Inject constructor(context: Context) {
     val authStateFlow: StateFlow<AuthState> = _authStateFlow.asStateFlow()
 
     @Synchronized
-    fun setAuth(id: Long, token: String) {
+    fun  setAuth(id: Long, token: String) {
         _authStateFlow.value = AuthState(id, token)
         with(prefs.edit()) {
             putLong(idKey, id)

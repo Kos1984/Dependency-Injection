@@ -6,9 +6,12 @@ import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownError
 import java.io.IOException
 
-class UserSingIn {
+class UserSingIn(
+    private val postsApiService: PostsApiService,
+    private val appAuth: AppAuth,
+) {
     suspend fun getAuth(login: String, pass: String) {
-       /* try {
+        try {
             val response = postsApiService.updateUser(login, pass)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -19,6 +22,6 @@ class UserSingIn {
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
-        }*/
+        }
     }
 }

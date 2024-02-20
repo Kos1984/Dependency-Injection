@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -25,9 +26,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
-
-    //@Inject
-    //lateinit var appAuth: AppAuth
+    @Inject
+    lateinit var appAuth: AppAuth
+    @Inject
+    lateinit var firebaseMessaging: FirebaseMessaging
 
     private val viewModel: AuthViewModel by viewModels()
 
@@ -77,10 +79,17 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
                     R.id.signin -> {
-                        findNavController(R.id.nav_host_fragment)
-                           .navigate(R.id.action_feedFragment_to_authUserFragment)
-                        // TODO: just hardcode it, implementation must be in homework
-                        //AppAuth.getInstance().setAuth(5, "x-token")
+                        val navController = findNavController(R.id.nav_host_fragment)
+                        lateinit var listener: NavController.OnDestinationChangedListener
+                        listener = NavController.OnDestinationChangedListener { _, destination, _ ->
+                            when (destination.id) {
+                                R.id.feedFragment -> navController.navigate(R.id.action_feedFragment_to_authUserFragment)
+                                R.id.newPostFragment -> navController.navigate(R.id.action_newPostFragment_to_authUserFragment)
+                            }
+                            // удаляем listener что бы не было ошибок в навигации
+                            navController.removeOnDestinationChangedListener(listener)
+                        }
+                        navController.addOnDestinationChangedListener(listener)
                         true
                     }
 
@@ -92,7 +101,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
                     R.id.signout -> {
                         // TODO: just hardcode it, implementation must be in homework
-                        //appAuth.removeAuth()
+                        appAuth.removeAuth()
                         true
                     }
 
@@ -129,7 +138,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                 .show()
         }
 
-        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+        firebaseMessaging.token.addOnSuccessListener {
             println(it)
         }
     }

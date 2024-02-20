@@ -19,11 +19,12 @@ class AuthUserViewModel @Inject constructor(
     private val loginModel = MutableLiveData<AuthModel> ()
     val _loginModel: LiveData<AuthModel>
         get() = loginModel
-    private val userSingIn = UserSingIn()
+    @Inject
+    lateinit var  userSingIn : UserSingIn
 
     fun getAuth(login: String, pass: String) = viewModelScope.launch{
         try {
-           // userSingIn.getAuth(login, pass)
+            userSingIn.getAuth(login, pass)
             loginModel.value = AuthModel(authIsSuccess = true)
         }catch (e: Exception){
             loginModel.value = AuthModel(error = true)

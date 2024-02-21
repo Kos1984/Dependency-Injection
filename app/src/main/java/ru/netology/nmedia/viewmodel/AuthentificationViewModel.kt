@@ -12,15 +12,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthUserViewModel @Inject constructor(
-
-    ) : ViewModel() {
+    private val  userSingIn : UserSingIn
+) : ViewModel() {
 
 
     private val loginModel = MutableLiveData<AuthModel> ()
     val _loginModel: LiveData<AuthModel>
         get() = loginModel
-    @Inject
-    lateinit var  userSingIn : UserSingIn
 
     fun getAuth(login: String, pass: String) = viewModelScope.launch{
         try {

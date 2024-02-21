@@ -30,6 +30,8 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     lateinit var appAuth: AppAuth
     @Inject
     lateinit var firebaseMessaging: FirebaseMessaging
+    @Inject
+    lateinit var googleApiAvailability: GoogleApiAvailability
 
     private val viewModel: AuthViewModel by viewModels()
 
@@ -125,7 +127,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     }
 
     private fun checkGoogleApiAvailability() {
-        with(GoogleApiAvailability.getInstance()) {
+        with(googleApiAvailability) {
             val code = isGooglePlayServicesAvailable(this@AppActivity)
             if (code == ConnectionResult.SUCCESS) {
                 return@with
